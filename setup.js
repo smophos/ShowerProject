@@ -10,7 +10,7 @@ var HUDControls;
 var StartButton;
 var showerHead;
 var bathSpout;
-var waterControl, langText;
+var waterControl, LangText;
 var showerControl, bathControl;
 var showerButton, bathButton;
 var temperatureGauge, temperatureText;
@@ -364,11 +364,13 @@ function setupWallControls(){
     LangTextWall.text = "ENG";
 
     LangTextWall.on('selected',function(){
-        if(LangTextWall.text === "ENG")
+        if(LangTextWall.text === "ENG") {
             LangTextWall.text = "SCH";
-        else if(LangTextWall.text === "SCH")
+            LangText.text = "SCH";
+        }else if(LangTextWall.text === "SCH") {
             LangTextWall.text = "ENG";
-
+            LangText.text = "ENG";
+        }
         canvas.deactivateAll().renderAll();
     });
 
@@ -395,26 +397,30 @@ function setupWallControls(){
         originY: 'center', fill: 'grey'
     });
 
+    temperatureTextWall.hasControls = temperatureTextWall.hasBorders = false;
+    temperatureTextWall.lockMovementX = temperatureTextWall.lockMovementY = false;
+
     temperatureTextWall.on('selected', function(){
 
         if(temperatureMode === "celsius"){
             waterTemp = waterTemp * 1.8 + 32;
             waterTemp = Math.round(waterTemp);
             temperatureTextWall.text = waterTemp + "F";
+            temperatureText.text =  waterTemp + "F";
             temperatureMode = "fahrenheit";
         }
         else if(temperatureMode === "fahrenheit"){
             waterTemp = ( waterTemp - 32 ) * 0.55;
             waterTemp = Math.round(waterTemp);
             temperatureTextWall.text = waterTemp + "C";
+            temperatureText.text = waterTemp + "C";
             temperatureMode = "celsius";
         }
         canvas.deactivateAll().renderAll();
 
     });
 
-    temperatureTextWall.hasControls = temperatureTextWall.hasBorders = false;
-    temperatureTextWall.lockMovementX = temperatureTextWall.lockMovementY = false;
+
 
 
 
@@ -806,11 +812,13 @@ function setupWaterControls(){
     LangText.text = "ENG";
 
     LangText.on('selected',function(){
-        if(LangText.text === "ENG")
-        LangText.text = "SCH";
-        else if(LangText.text === "SCH")
-        LangText.text = "ENG";
-
+        if(LangText.text === "ENG") {
+            LangText.text = "SCH";
+            LangTextWall.text = "SCH"
+        }else if(LangText.text === "SCH") {
+            LangText.text = "ENG";
+            LangTextWall.text = "ENG";
+        }
         canvas.deactivateAll().renderAll();
     });
 
@@ -837,18 +845,23 @@ function setupWaterControls(){
     originY: 'center', fill: 'grey'
     });
 
+    temperatureText.hasControls = temperatureText.hasBorders = false;
+    temperatureText.lockMovementX = temperatureText.lockMovementY = true;
+
     temperatureText.on('selected', function(){
 
         if(temperatureMode === "celsius"){
             waterTemp = waterTemp * 1.8 + 32;
             waterTemp = Math.round(waterTemp);
             temperatureText.text = waterTemp + "F";
+            temperatureTextWall.text = waterTemp + "F";
             temperatureMode = "fahrenheit";
         }
         else if(temperatureMode === "fahrenheit"){
             waterTemp = ( waterTemp - 32 ) * 0.55;
             waterTemp = Math.round(waterTemp);
             temperatureText.text = waterTemp + "C";
+            temperatureTextWall.text = watertemp + "C";
             temperatureMode = "celsius";
         }
         canvas.deactivateAll().renderAll();
