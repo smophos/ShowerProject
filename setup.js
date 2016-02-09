@@ -15,12 +15,13 @@ var showerControl, bathControl;
 var showerButton, bathButton;
 var temperatureGauge, temperatureText;
 var waterTemp = 99, temperatureMode = "fahrenheit";
+var showerModeImg, showerModeImg2;
 
 
 //Controls for the Wall
 var childSafety, childSafetyWall;
 var startButtonWall, HUDControlsWall, bathControlWall, showerButtonWall, bathButtonWall, temperatureGaugeWall,
-    temperatureTextWall, LangTextWall;
+    temperatureTextWall, LangTextWall,showerModeImgWall,showerModeImgWall2 ;
 
 //var PositionVector = [];
 
@@ -138,6 +139,7 @@ function setupWallControls(){
             if(waterIsOn === false) {
 
                 startButtonWall.setFill('aqua');
+                startButton.setFill('aqua');
                 waterIsOn = true;
                 console.log('Water is on!');
 
@@ -152,6 +154,7 @@ function setupWallControls(){
             }else if(waterIsOn === true){
 
                 startButtonWall.setFill('grey');
+                startButton.setFill('grey');
                 bathSpout.setFill('grey');
                 showerHead.setFill('grey');
 
@@ -171,8 +174,8 @@ function setupWallControls(){
 
     fabric.loadSVGFromURL("icons/showers2.svg", function(objects, options) {
 
-        var img = fabric.util.groupSVGElements(objects, options);
-        img.set({
+        showerModeImgWall = fabric.util.groupSVGElements(objects, options);
+        showerModeImgWall.set({
             left:820,
             top: 740,
             originX: 'center',
@@ -182,8 +185,8 @@ function setupWallControls(){
         }).scale(0.25);
 
         fabric.loadSVGFromURL("icons/bath1.svg", function(objects, options) {
-            var img2 = fabric.util.groupSVGElements(objects, options);
-            img2.set({
+            showerModeImgWall2 = fabric.util.groupSVGElements(objects, options);
+            showerModeImgWall2.set({
                 left: 820,
                 top: 740,
                 originX: 'center',
@@ -208,10 +211,10 @@ function setupWallControls(){
                 showerButtonWall.setFill('aqua');
 
             zoomIndividually(showerButtonWall, (canvas.height / localHeight) );
-            zoomIndividually(img, (canvas.height / localHeight) );
-            zoomIndividually(img2, (canvas.height / localHeight) );
+            zoomIndividually(showerModeImgWall, (canvas.height / localHeight) );
+            zoomIndividually(showerModeImgWall2, (canvas.height / localHeight) );
 
-            showerControlWall = new fabric.Group([showerButtonWall,img,img2],{
+            showerControlWall = new fabric.Group([showerButtonWall,showerModeImgWall,showerModeImgWall2],{
                 lockMovementX: true,
                 lockMovementY: true,
                 hasControls: false,
@@ -221,7 +224,9 @@ function setupWallControls(){
 
                 if(showerMode === false) {
 
+                    showerButton.setFill('aqua');
                     showerButtonWall.setFill('aqua');
+                    bathButton.setFill('white');
                     bathButtonWall.setFill('white');
 
                     showerMode = true;
@@ -237,12 +242,19 @@ function setupWallControls(){
 
                     console.log("Trying to load images");
 
-                    if(img.visible === true){
-                        img2.visible = true;
-                        img.visible = false;
-                    }else if(img2.visible === true){
-                        img2.visible = false;
-                        img.visible = true;
+                    if(showerModeImgWall.visible === true){
+
+                        showerModeImg2.visible = true;
+                        showerModeImgWall2.visible = true;
+                        showerModeImgWall.visible = false;
+                        showerModeImg.visible = false;
+
+                    }else if(showerModeImgWall2.visible === true){
+                        showerModeImg2.visible = false;
+                        showerModeImgWall2.visible = false;
+                        showerModeImgWall.visible = true;
+                        showerModeImg.visible = true;
+
                     }
 
 
@@ -291,8 +303,11 @@ function setupWallControls(){
             .on('selected', function () {
 
                 if(bathMode === false) {
-                    bathButtonWall.setFill('aqua');
+
                     showerButtonWall.setFill('white');
+                    bathButtonWall.setFill('aqua');
+                    bathButton.setFill('aqua');
+                    showerButton.setFill('white');
 
                     bathMode = true;
                     showerMode = false;
@@ -534,6 +549,8 @@ function setupWaterControls(){
             if(waterIsOn === false) {
 
                 startButton.setFill('aqua');
+                startButtonWall.setfill('aqua');
+
                 waterIsOn = true;
                 console.log('Water is on!');
 
@@ -548,6 +565,7 @@ function setupWaterControls(){
             }else if(waterIsOn === true){
 
                 startButton.setFill('grey');
+                startButtonWall.setFill('grey');
                 bathSpout.setFill('grey');
                 showerHead.setFill('grey');
 
@@ -577,8 +595,8 @@ function setupWaterControls(){
 
     fabric.loadSVGFromURL("icons/showers2.svg", function(objects, options) {
 
-        var img = fabric.util.groupSVGElements(objects, options);
-        img.set({
+        showerModeImg = fabric.util.groupSVGElements(objects, options);
+        showerModeImg.set({
             left: 1730,
             top: 360,
             originX: 'center',
@@ -588,8 +606,8 @@ function setupWaterControls(){
         }).scale(0.25);
 
             fabric.loadSVGFromURL("icons/bath1.svg", function(objects, options) {
-                var img2 = fabric.util.groupSVGElements(objects, options);
-                img2.set({
+                showerModeImg2 = fabric.util.groupSVGElements(objects, options);
+                showerModeImg2.set({
                     left: 1725,
                     top: 370,
                     originX: 'center',
@@ -610,14 +628,15 @@ function setupWaterControls(){
 
                 });
 
-                if(showerMode === true)
+                if(showerMode === true) {
                     showerButton.setFill('aqua');
+                }
 
                 zoomIndividually(showerButton, (canvas.height / localHeight) );
-                zoomIndividually(img, (canvas.height / localHeight) );
-                zoomIndividually(img2, (canvas.height / localHeight) );
+                zoomIndividually(showerModeImg, (canvas.height / localHeight) );
+                zoomIndividually(showerModeImg2, (canvas.height / localHeight) );
 
-                showerControl = new fabric.Group([showerButton,img,img2],{
+                showerControl = new fabric.Group([showerButton,showerModeImg,showerModeImg2],{
                     lockMovementX: true,
                     lockMovementY: true,
                     hasControls: false,
@@ -628,7 +647,9 @@ function setupWaterControls(){
                     if(showerMode === false) {
 
                         showerButton.setFill('aqua');
+                        showerButtonWall.setFill('aqua');
                         bathButton.setFill('white');
+                        bathButtonWall.setFill('white');
 
                         showerMode = true;
                         bathMode = false;
@@ -643,12 +664,20 @@ function setupWaterControls(){
 
                         console.log("Trying to load images");
 
-                        if(img.visible === true){
-                            img2.visible = true;
-                            img.visible = false;
-                        }else if(img2.visible === true){
-                            img2.visible = false;
-                            img.visible = true;
+                        if(showerModeImg.visible === true){
+
+                            showerModeImgWall2.visible = true;
+                            showerModeImg2.visible = true;
+                            showerModeImg.visible = false;
+                            showerModeImgWall.visible = false;
+
+                        }else if(showerModeImg2.visible === true){
+
+                            showerModeImgWall2.visible = false;
+                            showerModeImg2.visible = false;
+                            showerModeImgWall.visible = true;
+                            showerModeImg.visible = true;
+
                         }
 
                         /*bathButton.setFill('aqua');
@@ -706,6 +735,10 @@ function setupWaterControls(){
             .on('selected', function () {
 
                 if(bathMode === false) {
+
+
+                    showerButtonWall.setFill('white');
+                    bathButtonWall.setFill('aqua');
                     bathButton.setFill('aqua');
                     showerButton.setFill('white');
 
