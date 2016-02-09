@@ -38,9 +38,10 @@ function init() {
     canvas.hoverCursor = 'pointer';
     //setupCanvas();
     createWalls();
-    //setupWaterControls();
-    //zoomAll(canvas.height / localHeight);
+    setupWaterControls();
+
     setupWallControls();
+    zoomAll(canvas.height / localHeight);
 
 }
 
@@ -162,8 +163,9 @@ function setupWallControls(){
             }
             canvas.deactivateAll(); // deselect everything
             canvas.renderAll();
-        });
 
+        });
+        zoomIndividually(startButtonWall, (canvas.height / localHeight) );
         canvas.add(startButtonWall);
     });
 
@@ -205,13 +207,13 @@ function setupWallControls(){
             if(showerMode === true)
                 showerButtonWall.setFill('aqua');
 
-            //zoomIndividually(showerButtonWall, (canvas.height / localHeight) );
-            //zoomIndividually(img, (canvas.height / localHeight) );
-            //zoomIndividually(img2, (canvas.height / localHeight) );
+            zoomIndividually(showerButtonWall, (canvas.height / localHeight) );
+            zoomIndividually(img, (canvas.height / localHeight) );
+            zoomIndividually(img2, (canvas.height / localHeight) );
 
             showerControlWall = new fabric.Group([showerButtonWall,img,img2],{
-                //lockMovementX: true,
-                //lockMovementY: true,
+                lockMovementX: true,
+                lockMovementY: true,
                 hasControls: false,
                 hasBorders: false}).on('selected', function () {
 
@@ -273,8 +275,8 @@ function setupWallControls(){
             originY: 'center'
         }).scale(1);
 
-        /*startButton.hasControls = startButton.hasBorders = false;
-         startButton.lockMovementX = startButton.lockMovementY = true;*/
+        startButton.hasControls = startButton.hasBorders = false;
+        startButton.lockMovementX = startButton.lockMovementY = true;
 
         img.setFill('grey');
 
@@ -291,8 +293,8 @@ function setupWallControls(){
         if(bathMode === true)
             bathButtonWall.setFill('aqua');
 
-        bathControlWall = new fabric.Group([bathButtonWall,img],{//lockMovementX: true,
-            //lockMovementY: true,
+        bathControlWall = new fabric.Group([bathButtonWall,img],{lockMovementX: true,
+            lockMovementY: true,
             hasControls: false,
             hasBorders: false})
             .on('selected', function () {
@@ -329,8 +331,8 @@ function setupWallControls(){
 
         //bathSpoutWall.setFill('#668cff');
         canvas.add(bathControlWall);
-        //zoomIndividually(bathControlWall, (canvas.height / localHeight) );
-        //canvas.calcOffset();
+        zoomIndividually(bathControlWall, (canvas.height / localHeight) );
+        canvas.calcOffset();
         canvas.renderAll();
     });
 
@@ -387,7 +389,7 @@ function setupWallControls(){
          childSafetyWall.lockMovementX = childSafetyWall.lockMovementY = true;
 
         canvas.add(childSafetyWall);
-        //zoomIndividually(childSafetyWall, (canvas.height / localHeight));
+        zoomIndividually(childSafetyWall, (canvas.height / localHeight));
 
     });
 
@@ -563,7 +565,7 @@ function setupWaterControls(){
 
         canvas.add(startButton);
         canvas.renderAll();
-        //zoomIndividually(startButton, (canvas.height / localHeight) );
+        zoomIndividually(startButton, (canvas.height / localHeight) );
 
     });
 
@@ -605,9 +607,9 @@ function setupWaterControls(){
                 if(showerMode === true)
                     showerButton.setFill('aqua');
 
-                //zoomIndividually(showerButton, (canvas.height / localHeight) );
-                //zoomIndividually(img, (canvas.height / localHeight) );
-                //zoomIndividually(img2, (canvas.height / localHeight) );
+                zoomIndividually(showerButton, (canvas.height / localHeight) );
+                zoomIndividually(img, (canvas.height / localHeight) );
+                zoomIndividually(img2, (canvas.height / localHeight) );
 
                 showerControl = new fabric.Group([showerButton,img,img2],{
                     lockMovementX: true,
@@ -691,8 +693,8 @@ function setupWaterControls(){
         if(bathMode === true)
             bathButton.setFill('aqua');
 
-        bathControl = new fabric.Group([bathButton,img],{//lockMovementX: true,
-            //lockMovementY: true,
+        bathControl = new fabric.Group([bathButton,img],{lockMovementX: true,
+            lockMovementY: true,
             hasControls: false,
             hasBorders: false})
             .on('selected', function () {
@@ -729,7 +731,7 @@ function setupWaterControls(){
 
         //bathSpout.setFill('#668cff');
         canvas.add(bathControl);
-        //zoomIndividually(bathControl, (canvas.height / localHeight) );
+        zoomIndividually(bathControl, (canvas.height / localHeight) );
         //canvas.calcOffset();
         canvas.renderAll();
     });
@@ -787,7 +789,7 @@ function setupWaterControls(){
         childSafety.lockMovementX = childSafety.lockMovementY = true;
 
         canvas.add(childSafety);
-        //zoomIndividually(childSafety, (canvas.height / localHeight));
+        zoomIndividually(childSafety, (canvas.height / localHeight));
 
     });
 
@@ -836,8 +838,8 @@ function setupWaterControls(){
     });
 
 
-    /*temperatureGauge.hasControls = temperatureGauge.hasBorders = false;
-    temperatureGauge.lockMovementX = temperatureGauge.lockMovementY = true;*/
+    temperatureGauge.hasControls = temperatureGauge.hasBorders = false;
+    temperatureGauge.lockMovementX = temperatureGauge.lockMovementY = true;
 
     canvas.on('mouse:down' , function(e) {
         // if mouse down is the temperature controls
@@ -1036,18 +1038,6 @@ function createWalls(){
 
 
 
-    /*bathSpout = new fabric.Rect({
-        left: 1635,
-        top: 950,
-        originX: 'center',
-        originY: 'center',
-        fill: 'grey',
-        stroke: 'black',
-        width: 60,
-        height: 30,
-        angle: 0
-    });*/
-
 
     canvas.add(backWall);
     canvas.add(sideWall);
@@ -1077,7 +1067,7 @@ function createWalls(){
         //bathSpout.setFill('#668cff');
         canvas.add(bathSpout);
         //canvas.calcOffset();
-        //zoomIndividually(bathSpout, (canvas.height / localHeight) );
+        zoomIndividually(bathSpout, (canvas.height / localHeight) );
         canvas.renderAll();
     });
 
@@ -1105,7 +1095,7 @@ function createWalls(){
         canvas.add(showerHead);
 
         //canvas.calcOffset();
-        //zoomIndividually(showerHead, (canvas.height / localHeight) );
+        zoomIndividually(showerHead, (canvas.height / localHeight) );
         canvas.renderAll();
 
     });
