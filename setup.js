@@ -10,26 +10,32 @@ var HUDControls;
 var StartButton;
 var showerHead;
 var bathSpout;
-var waterControl;
+var waterControl, langText;
 var showerControl, bathControl;
 var showerButton, bathButton;
-var canvas;
-var localHeight = 990;
-var localWidth = 1860;
 var temperatureGauge, temperatureText;
 var waterTemp = 99, temperatureMode = "fahrenheit";
+
+
+//Controls for the Wall
 var childSafety, childSafetyWall;
-var startButtonWall, showerHeadWall, HUDControlsWall, bathControlWall, showerButtonWall, bathButtonWall, temperatureGaugeWall,
-    temperatureTextWall;
+var startButtonWall, HUDControlsWall, bathControlWall, showerButtonWall, bathButtonWall, temperatureGaugeWall,
+    temperatureTextWall, LangTextWall;
 
 //var PositionVector = [];
 
+
+var canvas;
+var localHeight = 990;
+var localWidth = 1860;
 
 
 //Working mode flags
 var waterIsOn = false;
 var bathMode = true, showerMode = false;
 var tempCurrent = 0, bathLevel = 0;
+var temp_down = false;
+var element = null;
 
 function init() {
     "use strict";
@@ -93,27 +99,21 @@ function zoomAll(SCALE_FACTOR) {
 
 
 function updateWaterTemp() {
+
     if (temperatureMode === "fahrenheit" && waterTemp > 100) {
         childSafety.setFill('red');
+        childSafetyWall.setFill('red');
     }
     else if(temperatureMode === "celsius" && waterTemp > 37) {
         childSafety.setFill('red');
+        childSafetyWall.setFill('red');
     }else{
         childSafety.setFill('aqua');
-    }
-
-}
-function updateWaterTempWall() {
-    if (temperatureMode === "fahrenheit" && waterTemp > 100) {
-        childSafetyWall.setFill('red');
-    }
-    else if(temperatureMode === "celsius" && waterTemp > 37) {
-        childSafetyWall.setFill('red');
-    }else{
         childSafetyWall.setFill('aqua');
     }
 
 }
+
 
 function setupWallControls(){
 
@@ -125,7 +125,7 @@ function setupWallControls(){
             left: 730,
             top: 780,
             originX: 'center',
-            originY: 'center',
+            originY: 'center'
         }).scale(0.15);
 
         startButtonWall.hasControls = startButtonWall.hasBorders = false;
@@ -142,18 +142,18 @@ function setupWallControls(){
                 console.log('Water is on!');
 
                 if(bathMode === true){
-                    bathSpoutWall.setFill('aqua');
+                    bathSpout.setFill('aqua');
 
                 }else if(showerMode === true){
-                    showerHeadWall.setFill('aqua');
+                    showerHead.setFill('aqua');
 
                 }
 
             }else if(waterIsOn === true){
 
                 startButtonWall.setFill('grey');
-                bathSpoutWall.setFill('grey');
-                showerHeadWall.setFill('grey');
+                bathSpout.setFill('grey');
+                showerHead.setFill('grey');
 
                 waterIsOn = false;
 
@@ -228,8 +228,8 @@ function setupWallControls(){
                     bathMode = false;
 
                     if (waterIsOn === true) {
-                        bathSpoutWall.setFill('grey');
-                        showerHeadWall.setFill('aqua');
+                        bathSpout.setFill('grey');
+                        showerHead.setFill('aqua');
                     }
 
                 }
@@ -245,15 +245,7 @@ function setupWallControls(){
                         img.visible = true;
                     }
 
-                    /*bathButtonWall.setFill('aqua');
-                     showerButtonWall.setFill('white');
-                     showerMode = false;
-                     bathMode = true;
 
-                     if(waterIsOn === true) {
-                     bathSpoutWall.setFill('grey');
-                     showerHeadWall.setFill('aqua');
-                     }*/
                 }
                 canvas.deactivateAll().renderAll();
             });
@@ -275,8 +267,6 @@ function setupWallControls(){
             originY: 'center'
         }).scale(1);
 
-        startButton.hasControls = startButton.hasBorders = false;
-        startButton.lockMovementX = startButton.lockMovementY = true;
 
         img.setFill('grey');
 
@@ -289,7 +279,8 @@ function setupWallControls(){
             stroke: 'grey',
             strokeWidth: 3,
             radius: 35
-        })
+        });
+
         if(bathMode === true)
             bathButtonWall.setFill('aqua');
 
@@ -307,22 +298,10 @@ function setupWallControls(){
                     showerMode = false;
 
                     if(waterIsOn === true) {
-                        bathSpoutWall.setFill('aqua');
-                        showerHeadWall.setFill('grey');
+                        bathSpout.setFill('aqua');
+                        showerHead.setFill('grey');
                     }
                 }
-                /*else if(bathMode === true){
-                 bathButtonWall.setFill('white');
-                 showerButtonWall.setFill('aqua');
-
-                 bathMode = false;
-                 showerMode = true;
-
-                 if(waterIsOn === true) {
-                 bathSpoutWall.setFill('grey');
-                 showerHeadWall.setFill('aqua');
-                 }
-                 }*/
 
                 canvas.deactivateAll(); // deselect everything
                 canvas.renderAll();
@@ -364,6 +343,9 @@ function setupWallControls(){
         originY: 'center', fill: 'grey'
     });
 
+    LangTextWall.hasControls = LangTextWall.hasBorders = false;
+    LangTextWall.lockMovementX = LangTextWall.lockMovementY = false;
+
     LangTextWall.text = "ENG";
 
     LangTextWall.on('selected',function(){
@@ -386,7 +368,7 @@ function setupWallControls(){
         }).scale(.07);
 
         childSafetyWall.hasControls = childSafetyWall.hasBorders = false;
-         childSafetyWall.lockMovementX = childSafetyWall.lockMovementY = true;
+        childSafetyWall.lockMovementX = childSafetyWall.lockMovementY = true;
 
         canvas.add(childSafetyWall);
         zoomIndividually(childSafetyWall, (canvas.height / localHeight));
@@ -416,6 +398,10 @@ function setupWallControls(){
 
     });
 
+    temperatureTextWall.hasControls = temperatureTextWall.hasBorders = false;
+    temperatureTextWall.lockMovementX = temperatureTextWall.lockMovementY = false;
+
+
 
     temperatureGaugeWall = new fabric.Rect({
         left: 800,
@@ -439,36 +425,54 @@ function setupWallControls(){
 
 
     temperatureGaugeWall.hasControls = temperatureGaugeWall.hasBorders = false;
-     temperatureGaugeWall.lockMovementX = temperatureGaugeWall.lockMovementY = true;
+    temperatureGaugeWall.lockMovementX = temperatureGaugeWall.lockMovementY = true;
 
-    canvas.on('mouse:down' , function(e) {
+
+    /*canvas.on('mouse:down', function(e){
+            if (e.target && e.target.id == 'controls'){
+                temp_down = true;
+                element = e;
+                console.log("down");
+            }
+    });
+
+    canvas.on('mouse:up', function(e) {
+        temp_down = false;
+        console.log("up");
+        element = null;
+
+    });
+
+    canvas.on(
+        'mouse:move', function(e) {
         // if mouse down is the temperature controls
-        if (e.target && e.target.id == 'controls'){
+        if (temp_down && element.target && element.target.id == 'controls'){
             // get the position of the mouse
             // subtract the bounds
             var pointer = canvas.getPointer(event.e);
             var posX = pointer.x;
-            var clipX = posX- e.target.left;
+            var clipX = posX- element.target.left;
             var posY = pointer.y;
-            var clipY = posY - e.target.top;
+            var clipY = posY - element.target.top;
 
-            var startX = clipX, stopX = e.target.width;
+            var startX = clipX, stopX = element.target.width;
 
-            if(clipX < e.target.width / 2)
+            if(clipX > stopX) startX = element.target.width-1;
+
+            if(clipX < element.target.width / 2)
             {
-                stopX = (e.target.width/2) + clipX;
+                stopX = (element.target.width/2) + clipX;
             }
-
             console.log("The value recorded is " + clipX);
 
-            e.target.setGradient('fill', {
+           element.target.setGradient('fill', {
                 x1: startX,
                 y1: 0,
                 x2: stopX,
                 y2: 0,
                 colorStops: {
-                    0: "aqua",
-                    1: "red"
+                    0: "red",
+                    1: "aqua"
                 }
             });
 
@@ -476,24 +480,26 @@ function setupWallControls(){
             //scaling water temperature
 
             var tempVal = (clipX/200 * 100) + 50;
-            if(temperatureMode === "fahrenheit"){
+            if( parseInt(tempVal,10) >= 50 && parseInt(tempVal,10) <= 150 ) {
+                if (temperatureMode === "fahrenheit") {
 
-                tempVal = Math.round(tempVal);
-                waterTemp = tempVal;
-                temperatureTextWall.text = waterTemp +"F";
-            }else if(temperatureMode === "celsius"){
-                tempVal = ( tempVal - 32 ) * 0.55;
-                tempVal = Math.round(tempVal);
-                waterTemp = tempVal;
-                temperatureTextWall.text = waterTemp + "C";
+                    tempVal = Math.round(tempVal);
+                    waterTemp = tempVal;
+                    temperatureTextWall.text = waterTemp + "F";
+                    temperatureText.text = waterTemp + "F";
+                } else if (temperatureMode === "celsius") {
+                    tempVal = ( tempVal - 32 ) * 0.55;
+                    tempVal = Math.round(tempVal);
+                    waterTemp = tempVal;
+                    temperatureTextWall.text = waterTemp + "C";
+                    temperatureText.text = waterTemp + "C";
+                }
+
+                updateWaterTemp();
+                canvas.renderAll();
             }
-
-            updateWaterTempWall();
-
-            canvas.renderAll();
-
         }
-    });
+    });*/
 
     canvas.add(LangTextWall);
     canvas.add(temperatureTextWall);
@@ -841,59 +847,91 @@ function setupWaterControls(){
     temperatureGauge.hasControls = temperatureGauge.hasBorders = false;
     temperatureGauge.lockMovementX = temperatureGauge.lockMovementY = true;
 
-    canvas.on('mouse:down' , function(e) {
-        // if mouse down is the temperature controls
+    canvas.on('mouse:down', function(e){
         if (e.target && e.target.id == 'controls'){
-            // get the position of the mouse
-            // subtract the bounds
-            var pointer = canvas.getPointer(event.e);
-            var posX = pointer.x;
-            var clipX = posX- e.target.left;
-            var posY = pointer.y;
-            var clipY = posY - e.target.top;
-
-            var startX = clipX, stopX = e.target.width;
-
-            if(clipX < e.target.width / 2)
-            {
-                stopX = (e.target.width/2) + clipX;
-            }
-
-            console.log("The value recorded is " + clipX);
-
-            e.target.setGradient('fill', {
-                x1: startX,
-                y1: 0,
-                x2: stopX,
-                y2: 0,
-                colorStops: {
-                    0: "aqua",
-                    1: "red"
-                }
-            });
-
-            //waterTemp = startX
-            //scaling water temperature
-
-            var tempVal = (clipX/200 * 100) + 50;
-            if(temperatureMode === "fahrenheit"){
-
-                tempVal = Math.round(tempVal);
-                waterTemp = tempVal;
-                temperatureText.text = waterTemp +"F";
-            }else if(temperatureMode === "celsius"){
-                tempVal = ( tempVal - 32 ) * 0.55;
-                tempVal = Math.round(tempVal);
-                waterTemp = tempVal;
-                temperatureText.text = waterTemp + "C";
-            }
-
-            updateWaterTemp();
-
-            canvas.renderAll();
-
+            temp_down = true;
+            element = e;
+            console.log("down");
         }
     });
+
+    canvas.on('mouse:up', function(e) {
+        temp_down = false;
+        console.log("up");
+        element = null;
+
+    });
+
+    canvas.on(
+        'mouse:move', function(e) {
+            // if mouse down is the temperature controls
+            if (temp_down && element.target && element.target.id == 'controls'){
+                // get the position of the mouse
+                // subtract the bounds
+                var pointer = canvas.getPointer(event.e);
+                var posX = pointer.x;
+                var clipX = posX- element.target.left;
+                var posY = pointer.y;
+                var clipY = posY - element.target.top;
+
+                var startX = clipX, stopX = element.target.width;
+
+                if(clipX > stopX) startX = element.target.width-1;
+
+                if(clipX < element.target.width / 2)
+                {
+                    stopX = (element.target.width/2) + clipX;
+                }
+                console.log("The value recorded is " + clipX);
+
+                temperatureGauge.setGradient('fill', {
+                    x1: startX,
+                    y1: 0,
+                    x2: stopX,
+                    y2: 0,
+                    colorStops: {
+                        0: "red",
+                        1: "aqua"
+                    }
+                });
+
+                temperatureGaugeWall.setGradient('fill', {
+                    x1: startX,
+                    y1: 0,
+                    x2: stopX,
+                    y2: 0,
+                    colorStops: {
+                        0: "red",
+                        1: "aqua"
+                    }
+                });
+                //waterTemp = startX
+                //scaling water temperature
+
+                var tempVal = (clipX/200 * 100) + 50;
+
+                //console.log("water temp is "+ tempVal);
+                //console.log("The parsed water temp is " +  parseInt(tempVal,10));
+
+                if( parseInt(tempVal,10) >= 50 && parseInt(tempVal,10) <= 150 ) {
+                    if (temperatureMode === "fahrenheit") {
+                        tempVal = Math.round(tempVal);
+                        waterTemp = tempVal;
+                        temperatureTextWall.text = waterTemp + "F";
+                        temperatureText.text = waterTemp + "F";
+                    } else if (temperatureMode === "celsius") {
+                        tempVal = ( tempVal - 32 ) * 0.55;
+                        tempVal = Math.round(tempVal);
+                        waterTemp = tempVal;
+                        temperatureTextWall.text = waterTemp + "C";
+                        temperatureText.text = waterTemp + "C";
+                    }
+
+                    updateWaterTemp();
+                    canvas.renderAll();
+                }
+            }
+        });
 
     canvas.add(LangText);
     canvas.add(temperatureText);
