@@ -7,7 +7,7 @@
 
 // ShowerControls
 var HUDControls;
-var StartButton;
+var startButton;
 var showerHead;
 var bathSpout;
 var waterControl, LangText;
@@ -555,7 +555,7 @@ function setupWaterControls(){
             if(waterIsOn === false) {
 
                 startButton.setFill('aqua');
-                startButtonWall.setfill('aqua');
+                startButtonWall.setFill('aqua');
 
                 waterIsOn = true;
                 console.log('Water is on!');
