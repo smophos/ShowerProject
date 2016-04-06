@@ -1,12 +1,10 @@
-# CS 426 Project 1: SHOWER
+# Touch Interface JAVA Project
 
 Touchscreen Interface for a shower
 
-link to the site -
+link to the project hosting site  -
 http://smophos.github.io/ShowerProject/
 
-link to the source code-
-https://github.com/smophos/ShowerProject/
 
 ---------------------------------------------------------------------------------------------------------------------
 # USER MANUAL
